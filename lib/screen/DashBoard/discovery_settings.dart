@@ -86,6 +86,7 @@ class _DiscoverySettingsState extends State<DiscoverySettings> {
   ];
   List<String> selectedInterests = [];
   bool showAll = false;
+
   @override
   Widget build(BuildContext context) {
     double baseWidth = 430;
