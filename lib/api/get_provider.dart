@@ -1,11 +1,11 @@
 import 'package:get/get.dart';
 
-class UserProvider extends GetConnect {
+class GetProvider extends GetConnect {
   // Get request
   Future<Response> getUser(int id) => get('http://youapi/users/$id');
 
   // Post request
-  Future<Response> postUser(Map data) => post('http://youapi/users', data,
+  Future<Response> sendPost(Map data) => post('http://youapi/users', data,
       contentType: 'application/json; charset=UTF-8');
 
   // Post request with File

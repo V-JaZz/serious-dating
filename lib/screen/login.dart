@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:serious_dating/controllers/login_controller.dart';
 import 'package:serious_dating/screen/sign_in.dart';
 import 'package:serious_dating/utils/helper.dart';
 import 'package:serious_dating/utils/styles.dart';
@@ -23,9 +25,14 @@ class Login extends StatefulWidget {
   State<Login> createState() => _LoginState();
 }
 
+// extends GetView<LoginController>
+// GetX<LoginController>
+
 class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
-  String _email = '', _pass = '';
+
+  LoginController loginController = Get.put(LoginController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,7 +69,7 @@ class _LoginState extends State<Login> {
                             focusedBorder: InputBorder.none,
                           ),
                           onChanged: (value) {
-                            _email = value;
+                            loginController.email = value;
                           },
                           validator: (value) {
                             if (value == '' || value == null) {
@@ -91,7 +98,7 @@ class _LoginState extends State<Login> {
                             focusedBorder: InputBorder.none,
                           ),
                           onChanged: (value) {
-                            _pass = value;
+                            loginController.pass = value;
                           },
                           validator: (value) {
                             if (value == '' || value == null) {
@@ -192,8 +199,6 @@ class _LoginState extends State<Login> {
                                   backgroundColor: Colors.transparent,
                                   child: Image.asset(
                                       'assets/icon/google_logo.png'),
-                                  // backgroundImage:
-                                  //     AssetImage('assets/icon/twitter.png'),
                                 ),
                               ),
                               InkWell(
@@ -210,8 +215,6 @@ class _LoginState extends State<Login> {
                                   radius: 15,
                                   backgroundColor: Colors.transparent,
                                   child: Image.asset('assets/icon/twitter.png'),
-                                  // backgroundImage:
-                                  //     AssetImage('assets/icon/twitter.png'),
                                 ),
                               )
                             ],
@@ -293,8 +296,8 @@ class _LoginState extends State<Login> {
   void _doLogin() async {
     FocusManager.instance.primaryFocus?.unfocus();
     try {
-      final credential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: _email, password: _pass);
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: loginController.email, password: loginController.pass);
       Navigator.of(context).pop();
       if (credential.user != null) {
         Navigator.pushNamed(context, SelectGender.routeName);
